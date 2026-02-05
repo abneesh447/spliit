@@ -1,0 +1,24 @@
+'use client';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+export function AsyncButton({ action, children, loadingContent, ...props }) {
+    const [loading, setLoading] = useState(false);
+    return (<Button onClick={async () => {
+            try {
+                setLoading(true);
+                await action?.();
+            }
+            catch (err) {
+                console.error(err);
+            }
+            finally {
+                setLoading(false);
+            }
+        }} {...props}>
+      {loading ? (<>
+          <Loader2 className="w-4 h-4 mr-2 animate-spin"/>{' '}
+          {loadingContent ?? children}
+        </>) : (children)}
+    </Button>);
+}

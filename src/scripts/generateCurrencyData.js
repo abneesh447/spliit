@@ -1,0 +1,24 @@
+// @ts-nocheck
+import { locales } from '@/i18n/request';
+import { supportedCurrencyCodes, } from '@/lib/currency';
+import CurrencyList from 'currency-list';
+import fs from 'node:fs';
+const currencyList = locales.reduce((curList, locale) => {
+    const currencyData = supportedCurrencyCodes.reduce((curData, currencyCode) => {
+        try {
+            return {
+                ...curData,
+                [currencyCode]: CurrencyList.get(currencyCode, locale.replaceAll('-', '_')),
+            };
+        }
+        catch {
+            // For currency translations which are not found in the library (e.g. ua), use English.
+            return {
+                ...curData,
+                [currencyCode]: CurrencyList.get(currencyCode, 'en_US'),
+            };
+        }
+    }, {});
+    return { ...curList, [locale]: currencyData };
+}, {});
+fs.writeFileSync('src/lib/currency-data.json', JSON.stringify(currencyList, null, 2) + '\n');
