@@ -36,7 +36,7 @@ Follow these steps to run Spliit locally on your machine:
 
 ### 2. Clone & Install Dependencies
 ```bash
-git clone https://github.com/spliit-app/spliit.git
+git clone https://github.com/abneesh447/spliit.git
 cd spliit
 npm install
 ```
